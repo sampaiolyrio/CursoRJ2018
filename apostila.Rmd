@@ -1,0 +1,618 @@
+---
+title: "Linguagem R de programação Estatística"
+author: "Professor Eduardo Monteiro de Castro Gomes"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE)
+```
+
+##Apresentação
+
+Esse material foi desenvolvido pelo professor Eduardo Monteiro de Castro Gomes sob demanda da ESACS/RJ para o curso  _Linguagem R de programação e pacote Shiny para criação de aplicativos de dados_.  
+
+O material está organizado em dois módulos; o primeiro referente aos princípios gerais da linguagem R de programação estatística, e o segundo referente ao pacote Shiny e funcionalidades gráficas da linguagem R.
+
+Neste primeiro módulo estão apresentadas as principais estruturas de dados (Escalar, Vetor, Matriz, Data.frame e Lista), as principais estruturas de controle (laços de repetição _for_ e _while_ e estruturas para execução condicional) e formas de importação de dados.
+
+
+\newpage
+
+
+
+A forma mais simples de utilização do R é como uma calculadora para realizar operações básicas como:
+```{r}
+2 + 2
+```
+ou 
+```{r}
+1348.75 / 7
+```
+e conjuntos de operações 
+```{r}
+(783 - 139)^2 / 5
+```
+Essa utilização simplória começa a se tornar vantajosa, em relação a uma simples calculadora, a partir do momento em que é possível armazenar o resultado das operações realizadas para reutilização em outras operações. 
+
+No exemplo seguinte temos o valor de um determinado produto, 750 reais, ao qual será aplicado um desconto, 12%, e o valor final calculado e salvo em um objeto chamado _preco_final_.
+```{r}
+preco_final <- 750 * .88
+preco_final
+```
+
+Para fazer a atribuição de um objeto utiliza-se "<-" determinando o valor no lado esquerdo como nome do objeto representado no lado direito. É importante notar que a linguagem faz distinção entre letras minúsculas e maiúsculas. Os nomes podem ser formados por letras, números, "_" e ".", devendo ser iniciados por letras ou por pontos desde que não sejam seguidos por números.
+```{r}
+nome_valido1 <- 10
+.outro_valido <- 10
+```
+
+Voltando ao exemplo do produto com desconto, suponha que tem-se o interesse em parcelar o pagamento do produto em 3 parcelas e pode-se utilizar o nome do objeto em que foi armazenado o preço final do produto com o desconto para calcular o valor de cada parcela.
+
+```{r}
+preco_final / 3
+```
+\newpage
+##Vetores
+
+É natural considerar que as operações que serão realizadas com auxílio da linguagem R consideram grandes números de observações. Uma primeira extensão que vamos considerar aos objetos númericos que vimos no exemplo anterior é pela utilização de vetores que permitem armazenar conjuntos de valores. 
+
+A função para criação dos vetores é _c()_ em que a letra c é utilizada como abreviação de concatenação que será realizada entre os objetos para serem agrupados em um único objeto.
+
+```{r}
+precos <- c(750, 822, 300, 15)
+precos
+```
+e temos assim em um único objeto, chamado precos, um vetor que contem os valores 750, 822, 300 e 15. Note que a função _c()_ pode fazer tambem a concatenação entre vetores.
+```{r}
+vetor1 <- c(1,2,3,4)
+vetor2 <- c(100,200,300)
+vet_concatenado <- c(vetor1,vetor2)
+vet_concatenado
+```
+e __vet_concatenado__ é o vetor resultante da concatenação entre os vetores _vetor1_ e _vetor2_.
+
+\newpage
+####Funções úteis para criação de vetores numéricos
+Algumas funções comumente utilizadas para criação de vetores com valores numéricos são exemplificadas a seguir:
+```{r}
+1:10
+10:1
+-5:3
+1.5:8
+```
+o operador __:__ cria sequências de números com início no valor à esquerda incrementando ou decrementando uma unidade até um limite determinado pelo valor à direita do operador.
+
+A função _seq_ tem comportamento semelhante mas permite a determinação do tamanho do incremento ou decremento, ou a determinação do números de elementos igualmente espaçados desejados dentro dos limites determinados, conforme os exemplos:
+```{r}
+seq(from = 1, to = 10, by = .5)
+seq(from = 1, to = 10, length.out = 25)
+```
+
+A função _rep_ permite criar um vetor a partir da repetição de um elemento ou vetor, permitindo determinar o número de repetições para cada elemento de forma sequencial ou não.
+```{r}
+rep(c(1,2,3), times = 3)
+rep(c(10,20,30), each = 3)
+rep(c(10,20,30), times = c(1,2,3))
+```
+
+É possível gerar números aleatórios a partir de diferentes distribuições de probabilidade. As funções para geração de números aleatórios tem seus nomes formados pela letra _r_, de random, seguido pelo nome ou abreviação do nome da distribuição de probabilidade. A seguir são apresentados exemplos de números gerados pelas distribuições Normal e Poisson.
+
+```{r}
+rnorm(n = 10, mean = 100, sd = 25)
+rpois(n = 15, lambda = 500 )
+```
+
+\newpage
+####Tipos de elementos
+
+Até este ponto do texto foram considerados apenas exemplos em que as variáveis utilizadas foram todas numéricas, mas é bastante comum em linguagens de programação que se trabalhe com outros tipos de variáveis. Estaremos interessados aqui, alem das variáveis númericas, nas variáveis do tipo lógico e do tipo caracter. 
+
+* Variáveis lógicas
+
+As variáveis do tipo lógico podem assumir apenas dois valores: TRUE e FALSE, representando verdadeiro e falso. Esse tipo de variável lógica será de grande importância e é resultante principalmente de operações de comparação entre elementos do tipo:
+```{r}
+3 > 5
+3 < 5
+3 >= 5
+3 <= 5
+3 == 5
+3 == 3
+```
+
+Um vetor de elementos lógicos pode ser definido pela criação dos elementos conforme o exemplo a seguir:
+```{r}
+novo_vetor <- c(TRUE, T, FALSE, F)
+```
+note que a criação de elementos lógicos com valor verdadeiro pode ser feita utilizando a palavra completa _TRUE_ ou apenas a primeira letra _T_, sempre com letras maiúsculas. Os elementos com valor falso, de forma análoga podem ser criados com _FALSE_ ou apenas _F_.
+
+E vetores com elementos lógicos podem ser criados apartir de operações de comparação entre vetores
+```{r}
+limite <- 5
+notas_alunos <- c(8, 6, 3, 7, 4, 10)
+aprovacao <-  notas_alunos >= limite
+aprovacao
+```
+e nesse exemplo supondo que temos um vetor com as notas de alunos e a nota limite inferior para aprovação seja 5 então o vetor aprovação traz o resultado lógico indicando para as respectivas notas se o aluno foi aprovado
+
+
+* Variáveis caracter
+
+As variáveis do tipo caracter são utilizadas para armazenar palavras ou textos e devem ser definidas com a utilização de áspas _""_
+```{r}
+servidores <- c("Ana", "Pedro", "Carolina")
+servidores
+```
+
+Um objeto que pode ser útil em algumas aplicações para criação de vetor com caracteres em sequência
+```{r}
+letters
+LETTERS
+```
+
+
+\newpage
+####Operações entre vetores
+
+Uma das grandes vantagens da linguagem R de programação estatística é sua implementação de operações entre vetores. Vejamos um exemplo análogo ao visto anteriormente em que tinha-se interesse em calcular o preço final de um produto após aplicar um desconto de 12%. Considere que temos o vetor _precos_ que armazena o preço de diferentes produtos e desejamos calcular o preço final de cada um desses produtos após a aplicação do desconto. Pode-se realizar essa operação de forma simples na linguagem R com sua implementação vetorizada das operações
+
+```{r}
+precos
+precos * .88
+```
+e dessa forma foram calculados os preços finais dos quatro produtos com uma única operação. Nesse exemplo foram realizadas as operações entre um vetor e um escalar(vetor de tamanho 1), mas as operações vetorizadas em R permitem tambêm que as operações sejam realizadas entre dois vetores elemento a elemento. 
+```{r}
+vetorA <- c(1,2,3,4)
+vetorB <- c(10,20,30,40)
+vetorA + vetorB
+```
+No exemplo acima ambos os vetores tinham a mesma dimensão com 4 elementos cada. As operações entre vetores não estão restritas a vetores com mesma dimensão e a linguagem R utiliza-se de um procedimento chamado reciclagem para a realização de operações entre vetores de dimensões diferentes. 
+
+Os exemplos abaixo apresentam a forma em que a reciclagem é utilizada
+```{r}
+v1 <- c(100,200,300,400)
+v2 <- c(1,2)
+v1 +  v2
+```
+Note que ao realizar a soma entre os elementos dos vetores  o primeiro elemento do vetor _v1_ é somado ao primeiro elemento do vetor _v2_ e  o segundo elemento do vetor _v1_ é somado ao segundo elemento do vetor _v2_. Ao realizar a soma para o terceiro elemento do vetor _v1_ o vetor _v2_ não tem mais elementos para a soma e dessa forma o vetor _v2_ é reciclado e seu primeiro elemento é utilizado na soma com o terceiro elemento do vetor _v1_ e posteriormente o quarto elemento do vetor _v1_ é somado ao próximo elemento do vetor reciclado _v2_ que é seu segundo elemento. 
+
+A linguagem utiliza por padrão esse procedimento de reciclagem, de forma que em nosso exemplo em que o desconto foi aplicado ao preço de diferentes produtos com uma única operação o valor do desconto foi reciclado na multiplicação pelo preço de cada um dos produtos. 
+
+Dependendo das dimensões dos vetores considerados na reciclagem, quando as operações de reciclagem não reutilizam completamente o vetor reciclado, uma mensagem de aviso é apresentada ao usuário para alertar sobre uma falta de conformidade entre as dimensões dos vetores utilizados. O exemplo a seguir ilustra esse aviso gerado:
+
+```{r}
+V1 <- c(100,200,300)
+V2 <- c(1,2)
+V1 + V2
+```
+Note que o primeiro elemento de _V1_ foi somado ao primeiro elemento de _V2_ e o segundo elemento de _V1_ foi somado ao segundo elemento de _V2_. Para somar o terceiro elemento de _V1_ o vetor _V2_ precisou ser reciclado de forma que esse terceiro elemento de __V1__  foi somado ao primeiro elemento do vetor reciclado _V2_. O próximo elemento do vetor reciclado _V2_ não é utilizado, uma vez que não existem mais elementos do vetor _V1_ para ser somado. A operação de soma é realizada com a utilização de reciclagem parcial do vetor _V2_ mas uma mensagem de aviso é gerada para alertar o usuário. 
+
+\newpage
+####Indexação de vetores
+
+Os elementos de um vetor podem ser acessados pela posição em que estão. Quando se tem interesse em acessar um determinado elemento dentro de um objeto utiliza-se __[]__ após o nome do elemento e dentro desse operador deve se indicar os elementos de interesse. 
+
+Vamos considerar o seguinte vetor para exemplo:
+```{r}
+set.seed(123)
+numeros <- rpois(n = 6, lambda = 300)
+numeros
+```
+se tivermos interesse no número 270 que está na terceira posição pode-se acessa-lo conforme o exemplo:
+```{r}
+numeros[3]
+```
+pode-se indicar um vetor com os índices de interesse e no exemplo abaixo iremos selecionar os elementos que estão nas posições 2 e 4 do vetor _numeros_
+```{r}
+numeros
+numeros[c(2,4)]
+```
+Alternativamente à escolha dos elementos que se deseja acessar em um vetor pode-se indicar utilizando o sinal __-__ os elementos que não devem ser acessados. No exemplo abaixo vamos acessar todos os elementos do vetor _numeros_ menos o segundo elemento
+```{r}
+numeros
+numeros[-2]
+```
+e de forma análoga pode-se selecionar um vetor de índices que não serão acessados e no exemplo serão acessados todos os elementos do vetor _numeros_ exceto os elementos com índices 1 e 4
+```{r}
+numeros
+numeros[-c(1,4)]
+```
+
+A indexação dos elementos de um vetor tambêm pode ser realizada a partir dos elementos lógicos. Suponha que tem-se interesse em acessar os dois primeiros e o último elemento do vetor _numeros_
+```{r}
+numeros
+numeros[c(T,T,F,F,F,T)]
+```
+o vetor de elementos lógicos criado para indicar os elementos que devem ser acessados foi criado manualmente, mas é muito comum que esse vetor seja criado a partir de comparações. Suponha que do vetor _numeros_ tenha-se interesse em acessar somente os elementos com valores maiores que 300:
+```{r}
+numeros
+numeros > 300
+numeros[numeros > 300]
+```
+que é equivalente a fazer manualmente
+```{r}
+numeros[c(F,T,F,T,T,T)]
+```
+
+O princípio da reciclagem tambêm será utilizado na indexação utilizando variáveis lógicas. Pode-se, por exemplo utilizar-se dessa propriedade para selecionar apenas os elementos em índices pares fazendo:
+
+```{r}
+numeros
+numeros[c(F,T)]
+```
+a reciclagem ocorre de forma que o indicador dos índices _c(F,T)_ na primeira posição é Falso e portanto o priemeiro elemento não será acessado, o segundo indicador é verdadeiro e portanto e segundo elemento é acessado. Para decidir se o terceiro elemento será acessado o vetor de indicador dos índices é reciclado de forma que para o terceiro elemento o indicador é falso e para o quarto é positivo e a reciclagem prossegue enquanto for necessário, dado o comprimento do vetor que armazena os valores.
+
+\newpage
+
+####Ordenação de vetores
+
+A função _sort()_ pode ser utilizada para ordenação de um vetor conforme o exemplo:
+```{r}
+numeros
+sort(numeros)
+```
+tendo como possibilidade a ordenação de forma decrescente por meio da opção vista abaixo:
+```{r}
+numeros
+sort(numeros, decreasing = TRUE)
+```
+
+Em algumas situações é importante saber as posições ordenadas dos dados. Suponha que tenha-se interesse em ordenar o vetor de __numeros__ manualmente. Deveriamos primeiro pegar o elemento que está na posição 3 pois esse é o menor número, depois pegar o número que está na posição 1 que é o segundo menor número e as posições em que se deveria pegar os próximos números são 4, 6, 2, 5. E dessa forma ordenariamos o vetor:
+```{r}
+numeros[c(3,1,4,6,2,5)]
+```
+Esse processo que foi feito mentalmente, para encontrar as posições em que estão os valores de forma ordenada, é implementado pela função _order()_
+```{r}
+order(numeros)
+numeros[order(numeros)]
+```
+tendo tambêm a opção de buscar as posições ordenadas de forma decrescente
+```{r}
+numeros[order(numeros, decreasing = TRUE)]
+```
+A diferença entre as funções _sort_ e _order_ será importante quando deseja-se ordenar todo um conjunto de dados pelos valores de uma determinada variável de interesse. 
+
+\newpage
+
+#### Coerção
+
+Os vetores são implementados em R como objetos ditos homogêneos, em que cada um de seus elementos deve ser do mesmo tipo. Um vetor numérico deve conter somente números, um vetor de caracteres deve conter somente elementos do tipo caractere. Para que a homogeneidade do vetor seja mantida elementos de tipos diferentes são transformados para que tenham o mesmo tipo por coerção. Veja nos exemplos a seguir o comportamento da linguagem R quando elementos de tipos diferentes são concatenados em um objeto homogêneo.
+
+```{r}
+mistura <- c(1, "Ana", 3, "Beto")
+mistura
+```
+note que aos elementos numéricos 1 e 3 foram adicionadas áspas, de forma que esses elementos foram transformados para o tipo caracter para que o vetor mantivesse a propriedade de homegeneidade. Não é possível realizar uma operação matemática com esses elementos transformados, uma vez que não são mais numéricos:
+
+```{r}
+mistura[1]
+mistura[1] + 1
+```
+
+Ao tentar concatenar em um vetor elementos do tipo lógico com elementos do tipo caractere a transformação tambêm acontece, transformando os elementos do tipo lógico em elementos do tipo caractere conforme pode-se ver no exemplo a seguir com as áspas adicionadas aos elementos lógicos
+
+```{r}
+combinado <- c(TRUE, "verdade", FALSE, "mentira", T, F)
+combinado
+```
+
+Na concatenação de elementos do tipo lógico com elementos do tipo numérico os elementos do tipo lógico são convertidos em numéricos de forma que valores TRUE são transformados no valor numérico 1 e valores FALSE são transformados em valores numéricos 0.
+
+```{r}
+reunido <- c(10, TRUE, 1000, FALSE, 200, T, 500, F)
+reunido
+```
+Essas transformações entre tipos de elementos tambêm podem ser feitas por meio de funções. As funções deste tipo tem seus nomes definidos pelo tipo de variável que se deseja obeter com a transformação. 
+
+Para transformar elementos em numérico utiliza-se __as.numeric()__
+```{r}
+logicos <- c(T, F, TRUE, FALSE)
+as.numeric(logicos)
+```
+Para transformar elementos em lógicos utiliza-se __as.logical()__
+```{r}
+numericos <- c(0, 5, 0, 5000)
+as.logical(numericos)
+```
+e nesse tipo de transformação o valor zero é transformado em __FALSE__ e os valores diferentes de zero em __TRUE__.
+
+Para transformar elementos em caracteres utiliza-se __as.character()__
+
+```{r}
+numericos
+as.character(numericos)
+```
+
+A partir do conhecimento dos objetos do tipo vetor uma extensão simples é para os objetos do tipo matriz que tem suas propriedades ilustradas na seção seguinte.
+
+\newpage
+
+####Matrizes
+
+As matrizes são objetos com comportamento semelhante aos vetores mas apresentam duas dimensões organizando seus elementos em linhas e colunas
+```{r}
+mat1 <- matrix(data = 1:12, nrow = 3)
+mat1
+```
+na definição da matriz acima foram definidos os valores que compõe a matriz e foi definida uma das dimensões da matriz. A outra dimensão não precisou ser definida pois as matrizes em R sempre devem ser completas em sua forma retangular e assim se existem 12 elementos dispostos em 3 linhas consequentemente serão utilizadas 4 colunas. Nos casos em que as dimensões e a quantidade valores não for equivalente o princípio de reciclagem será utilizado para que a matriz tenha a forma retangular e seja completa com elementos. Nos casos em que a reciclagem não é completa uma mensagem de aviso é passada. 
+
+```{r}
+mat2 <- matrix(1:5, nrow = 2)
+mat2
+```
+
+
+Note que os números das matrizes foram preenchidos por colunas, mas pode-se optar por fazer o preenchimento por linhas utilizando o argumento _byrow = TRUE_ na definição da matriz
+```{r}
+mat3 <- matrix(data = 1:12, nrow = 3, byrow = TRUE)
+mat3
+```
+
+Os princípios de reciclagem se aplicam tambêm para as operações com matrizes conforme ilustrado a seguir
+```{r}
+mat3 * 10
+mat3 * c(-10,10,1000)
+```
+
+
+A indexação dos elementos na matrix segue o mesmo princípio de endereçamento considerado para os vetores, mas agora com um endereço de linha e outro de coluna na forma [ linha , coluna ]. Por exemplo, o elemento que está na segunda linha e terceira coluna da matriz _mat3_, que é o número 7, pode ser acessado por:
+```{r}
+mat3[ 2 , 3 ]
+```
+
+Podendo-se omitir o endereço de uma das dimensões para indicar o acesso a toda uma linha ou coluna. No exemplo a seguir é selecionada toda a quarta coluna da matriz _mat3_ omitindo-se o endereço de linha e selecionando a quarta coluna.
+```{r}
+mat3[,4]
+```
+
+É possível utilizar vetores para indicar endereços de linhas e colunas e assim para selecionar a primeira e terceira linha da matriz _mat3_ pode-se utilizar um vetor conforme o exemplo
+```{r}
+mat3[ c(1,3) , ]
+```
+
+
+As matrizes tambêm são objetos homgêneos, de forma que todos os elementos contidos em uma matriz devem ser do mesmo tipo. Assim como ocorre para os vetores a linguagem faz a coerção dos elementos inseridos para que todos sejam conforme no sentido de serem do mesmo tipo. 
+
+É muito comum que as informações armazenadas contenham tipos diferentes de informações envolvendo números, nomes, categorias. Para armazenar informações de diferentes tipos em um mesmo objeto pode se utilizar um _data.frame_. 
+
+####Dataframe
+
+O dataframe é um objeto semelhante a matriz por ter duas dimensões sendo elas linahs e colunas mas o dataframe tem a propriedade que cada coluna pode ser de um tipo diferente. Pode-se considerar que um dataframe é um agrupamento de vetores em colunas, onde cada coluna deve ser homogênea e possuir elementos de um único tipo. 
+
+Nesse contexto, de uma forma geral, as linhas representam as observações ou indivíduos e as colunas representam as diferentes variáveis coletadas para cada observação ou indivíduo.
+
+O exemplo a seguir ilustra um dataframe que armazena informações médicas de personagens fictícios.
+
+```{r}
+tabela_medica <- data.frame(nome = c("Ana","Bia","Carol","Daniela","Fernanda"),
+                            idade = c(30,40,50,60,70),
+                            numeroconsultas = c(3,7,1,6,2),
+                            tem_plano=c(TRUE,FALSE,FALSE,TRUE,TRUE))
+tabela_medica
+```
+
+O acesso aos elementos do dataframe podem ser feitos de forma semelhante ao acesso na matriz, pelo endereço de linha e coluna [linha,coluna] e as diferentes colunas podem tambêm ser acessadas por seus nomes de duas formas conforme os seguintes exemplos:
+
+```{r}
+tabela_medica$idade
+tabela_medica[,c("nome","tem_plano")]
+```
+
+
+* Ordenação do data.frame
+
+É comum o interesse em ordenar os dados por uma variável de interesse. Deve-se observar que é fundamental preservar as informações de cada um dos indivíduos. Deve-se determinar a ordem em que as linhas do data.frame será apresentado e a função _order_ será utilizada. No exemplo seguinte a tabela médica é ordenada pelo número de consultas, de forma que as pessoas com mais consultas são apresentadas no topo da tabela.
+
+```{r}
+tabela_medica
+tabela_medica[order(tabela_medica$numeroconsultas, decreasing = TRUE),]
+```
+
+Todas as colunas de um dataframe devem ter a mesma dimensão ou número de elementos. Um objeto que permite armazenar variáveis com tipos diferentes e dimensões diferentes é a lista.
+
+####Lista
+
+A lista é um objeto separado em _containers_ de forma que cada um desses _containers_ pode conter um objeto(vetor, matriz, dataframe, lista). Veja o seguinte exemplo:
+```{r}
+lista1 <- list(
+  numeros = numeros,
+  matriz = mat3,
+  tabela = tabela_medica
+)
+lista1
+```
+
+Pode-se acessar os elementos da lista usando seus nomes ou posições conforme os exemplos a seguir
+```{r}
+lista1["numeros"]
+lista1[1]
+```
+Ao acessar o vetor de números contido no primeiro container da lista o resultado é uma lista com um único container preenchido com o vetor. Para ter acesso ao vetor diretamente sem que esse esteja em uma lista pode-se utilizar as seguintes opções:
+```{r}
+lista1$numeros
+lista1[[1]]
+```
+
+O resultado da diferença entre acessar um objeto que está em container da lista diretamente ou acessar uma cópia de lista em que o objeto de interesse está no primeiro _container_ pode ser visto no exemplo seguinte:
+```{r}
+lista1[1]
+lista1[1]*10
+lista1[[1]]
+lista1[[1]]*10
+```
+
+Note que a operação não foi possível quando o objeto acessado era uma lista com um vetor em seu primeiro _container_ mas foi possível quando o objeto acessado era um vetor.
+
+Até esta parte foram consideradas as principais estruturas de dados utilizadas na linguagem R: escalar, vetor, matriz, data.frame e lista. Para melhor utilização das ferramentas da linguagem é importante conhecer tambêm a forma para a criação de funções.
+
+\newpage
+
+###Funções
+
+As funções permitem o reuso de código e simplificam a realização de tarefas repetidas que devem ser realizadas em conjuntos de dados. As funções tem como propriedades um conjunto de entradas ou parâmetros e um objeto ou comportamento como saída. 
+
+Em um primeiro exemplo será considerada uma função bem simples que recebe uma entrada _X1_ e soma 2 unidades a essa entrada como saída.
+
+```{r}
+soma2 <- function(X1){
+  X1 + 2
+}
+```
+
+Para utilizar a função basta chamá-la passando o argumento de interesse
+```{r}
+soma2(10)
+```
+
+Note que na linguagem R não é preciso definir o tipo dos parâmetros das funções, de forma que elas podem ter comportamento flexível 
+```{r}
+soma2(c(10,100,1000))
+```
+e quando um vetor é passado como argumento da função o retorno dessa função tambêm é um vetor. 
+
+É importante perceber que como não é necessária a definição do tipo dos parâmetros a função pode ter comportamentos indesejados quando tipos de objetos não previstos são passados como argumentos.
+```{r}
+soma2("vinte")
+```
+É recomendável portanto fazer verificação dos tipos de argumentos das funções conforme se vê em funções mais complexas.
+
+Como outro exemplo de função considere que seja corriqueiro o interesse em extrair os 3 maiores elementos de um vetor numérico. A função seguinte faz essa extração
+
+```{r}
+maiores <- function(vetor){
+  ordenado <- sort(vetor , decreasing = TRUE)
+  ordenado[3:1]
+}
+```
+
+```{r}
+vetor_aleatorio <- rpois(10,1000)
+vetor_aleatorio
+maiores(vetor_aleatorio)
+```
+
+Nos exemplos anteriores as funções tinham apenas um elemento em seu conjunto de entradas, mas é comum que as funções tenham múltiplos parâmetros. 
+
+Veja o exemplo da função que extrai os _k_ maiores valores de um vetor, em que o valor de _k_ é flexível e pode ser alterado conforme a necessidade.
+
+```{r}
+maiores <- function(vetor, k){
+  ordenado <- sort(vetor, decreasing = TRUE)
+  ordenado[k:1]
+}
+maiores(vetor_aleatorio, 2)
+maiores(vetor_aleatorio, 4)
+```
+
+
+
+\newpage
+
+####Execução condicional
+
+A estrutura de execução condicional permite determinar o fluxo de execução do programa. 
+
+Num primeiro exemplo de execução condicional utilizando a __tabela_medica__ vamos considerar que os indivíduos que não tem plano de saúde precisam ter registrados o valor devido em consultas supondo que o preço por consulta seja de R$150,00. 
+
+A função que calcula o valor devido recebe como entrada todas as informações do paciente e calcula como saída o valor da consulta multiplicado pelo número de consultas apenas para os que não tem plano, e para os outros retorna o valor zero. 
+```{r}
+valor_devido <- function(pessoa){
+  if(pessoa[,4] == TRUE){
+    return(0)
+  }else{
+    return(pessoa[,3] * 150.00)
+  }
+}
+```
+e assim para a Ana, a função deve calcular o valor igual a zero pois Ana tem plano de saúde
+```{r}
+tabela_medica
+valor_devido(tabela_medica[1,])
+```
+para Bia a função deve calcular o valor para as 7 consultas registradas
+```{r}
+valor_devido(tabela_medica[2,])
+```
+
+A execução condicional ocorreu a partir da determinação se a variável que referente ao plano de saúde tem valor verdadeiro ou falso, e para cada uma das possíveis condições, a execução da função tem seu comportamento diferenciado.
+
+Para a execução dessa função que calcula os valores devidos para todos os indivíduos no data.frame podem ser utilizadas laços de repetição.
+
+
+\newpage
+
+##Laços de repetição 
+
+Para a utilização de laço de reptição no cálculo dos valores devidos para todos os indivíduos da _tabelamedica_ será criado um novo vetor vazio _valores_ para armazenar os valores devidos calculados e então um laço do tipo _for_ será utilizado com um contador _i_ que varia do número 1 até o número 5 que representa o número total de linhas no dataframe desse exemplo
+
+```{r}
+valores <- c()
+for(i in 1:5){
+  valores[i] <- valor_devido(tabela_medica[i,])
+}
+valores
+tabela_medica$valores <- valores
+tabela_medica
+```
+
+Alternativamente pode-se utilizar um laço do tipo _while_ que repetirá o código enquanto o contador _i_ utilizado, que começa com valor 1, for menor que o valor 5. Note que o contador _i_ é incrementado a cada passagem do código:
+```{r}
+valores1 <- c()
+i <- 1
+while(i<5){
+  valores1[i] <- valor_devido(tabela_medica[i,])
+  i <- i + 1
+}
+valores1
+```
+
+na linguagem R tambêm é possível mapear a aplicação das funções repetidamente a conjuntos de elementos por meio da família apply de funções. 
+
+Nos exemplos vistos até este ponto os dados foram digitados maunalmente para ilustração das principais funcionalidades básicas da linguagem, mas é importante que seja possível importar dados de outras fontes.
+
+\newpage
+
+##Importação de dados
+
+A função básica para importação de dados para R é a função _read.table_. A utilização dessa função permite importar diferentes tipos de dados por meio da definição dos parâmetros que controlam as diferentes opções entre os tipos de arquivos, sendo elas: separador de campos, presença de cabeçalho, separador de números decimais e etc.
+
+No exemplo seguinte serão importados dados referentes a pesca de camarões no estado do Rio Grande do Norte
+```{r}
+camaroes <- read.table("dadoscamarao.txt", head = TRUE, dec=",")
+head(camaroes)
+```
+para a importação desse conjunto de dados foram passados como argumentos o endereço do arquivo de interesse, a informação que os dados tem um cabeçalho, de forma que a primeira linha dos dados é referente ao nome das variáveis e finalmente a indicação que os números decimais estão separados por vírgulas.
+
+A função _head_ utilizada após a importação dos dados tem como objetivo exibir as primeiras linhas do banco de dados e é comumente utilizada para verificar se a importação dos dados foi bem sucedida.
+
+\newpage
+
+##Relação com algumas das funções vistas nos exemplos desta seção
+
+* c()
+
+* matrix()
+
+* list()
+
+* operador :
+
+* seq()
+
+* rep()
+
+* rnorm()
+
+* rpois()
+
+* sort()
+
+* order()
+
+* function()
+
+* if()
+
+* for()
+
+* while()

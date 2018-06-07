@@ -1,0 +1,41 @@
+---
+title: "Exercicios de Fixação"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* Construa um vetor chamado _empresas_ que contenha o nome de 5 empresas de sua escolha
+* Apresente esse vetor em ordem alfabética. Caso já esteja em ordem alfabética apresente de forma decrescente (Z para a).
+* Acrescente o nome de uma universidade ao vetor _empresas_.
+
+* Crie um vetor chamado _contagens_ que contenha 10 números inteiros quaisquer entre 1 e 49.
+* Calcule a média dos valores de _contagens_.
+* Calcule a média dos valores de _contagens_ desconsiderando os 2 maiores e 2 menores valores do vetor.
+
+* Qual você acha que será o resultado de _mean(c(T,T,T))_?
+
+
+Nesse exercicio vamos simular cotações de abertura e fechamento do dolar durante 30 dias úteis a partir de uma segunda-feira. 
+
+Para simular os dados vamos rodar os seguintes comandos:
+
+```{r}
+set.seed(123)
+cotacoes <- round(rnorm(60, 3.7, .3), 4)
+cotacoes
+```
+
+Considerando que os dados estão organizados na forma: 
+`aberturaDia1,fechamentoDia1,aberturaDia2,fechamentoDia2,...,aberturaDia30,fechamentoDia30`
+* Crie um vetor _abertura_ apenas com os valores de abertura, e um vetor _fechamento_ apenas com os valores de fechamento
+
+* Determine para cada dia as variações diárias (fechamento-abertura)
+
+* Determine qual foi o dia com maior alta e qual o dia com a maior baixa
+
+* Apresente apenas as variações de sextas-feiras
+
+* Quantos dias tiveram variação maior que a média?
