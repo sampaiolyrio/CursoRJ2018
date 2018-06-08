@@ -1,0 +1,46 @@
+---
+title: "Exercício de Aula"
+author: ""
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Em nossa página temos 2 bancos de dados com informações metereológicas de Copacabana e Jacarepaguá. 
+
+* Importe os dados para o R.
+* Calcule a umidade média de cada dia em Copacabana. (Dica: use tapply)
+* Exiba as informações de umidade calculadas em um gráfico de série temporal. 
+* Calcule a umidade média de cada dia em Jacarepaguá (Dica: use tapply)
+* Acrescente ao gráfico com as informações de Copacabana as informações de Jacarepaguá com uma cor diferente.
+* Acrescente um título ao gráfico
+* Adeque os rótulos dos eixos.
+* Acrescente uma legenda que indique de qual cidade é cada uma das séries.
+* Acrescente uma linha horizontal que separe os 25% dos dias mais umidos em Copacabana
+* Acrescente uma linha horizontal que separe os 25% dos dias mais secos em Copacabana
+
+```{r, eval=FALSE}
+bsb <- read.table("brasilia.txt",head=T,sep=",")
+#head(bsb)
+gyn <- read.table("goiania.txt",head=T,sep=",")
+#head(gyn)
+```
+
+```{r, eval=FALSE}
+#umid_bsb <- tapply(bsb$umid_inst,bsb$data,mean)
+#plot(umid_bsb,type="b")
+#umid_gyn <-tapply(gyn$umid_inst,gyn$data,mean)
+#points(umid_gyn,type="b",col=2)
+```
+
+##Questão 2
+
+* Para cada localidade calcule o número de dias com chuva. (Dica: use tapply para somar a quantidade de chuva em cada dia e depois conte quantos foram maior que zero)
+
+* Faça um gráfico de barras que indique a quantidade de dias com chuva em cada cidade.
+
+## Questão 3
+
+* Crie um diagrama de dispersão relacionando a radiação à temperatura instantânea em Copacabana.

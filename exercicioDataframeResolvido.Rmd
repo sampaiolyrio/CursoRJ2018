@@ -1,0 +1,46 @@
+---
+title: "Exercício de Aula"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Considere o dataframe disponível no R _mtcars_
+
+```{r}
+head(mtcars)
+```
+
+* Ordene as informações em ordem decrescente pela variável _mpg_. 
+```{r}
+ordenado <- mtcars[order(mtcars$mpg,decreasing = T),]
+head(ordenado)
+```
+
+
+* Calcule a média de peso _wt_ dos carros que tem rendimento $mpg>22$.
+```{r}
+mean(mtcars[mtcars$mpg>22,"wt"])
+```
+
+* Quantos carros possuem 3 marchas _gear_?
+```{r}
+summary(as.factor(mtcars$gear))
+```
+
+
+* Suponha que serão premiados os carros conforme seu rendimento, de forma que o carro com maior _mpg_ deve ser o primeiro lugar e o carro com menor _mpg_ deve ser o último lugar na premiação. Crie um novo data.frame com nome _completo_ com as informações disponíveis adicionadas da coluna _premio_.
+```{r}
+completo <- data.frame(ordenado,premio = 1:nrow(ordenado))
+head(completo)
+```
+
+
+* Quais foram os prêmios recebidos pelos carros automáticos $(am=0)$ com 6 cilindros _cyl_?
+
+```{r}
+completo[completo$am==0 & completo$cyl == 6, "premio" ]
+```
+

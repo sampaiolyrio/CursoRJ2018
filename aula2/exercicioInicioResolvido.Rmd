@@ -1,0 +1,55 @@
+---
+title: "Exercício de Aula"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Nesse exercício vamos considerar uma planilha para registrar os dados de uma turma de alunos. 
+
+* Crie um data.frame com dados fictícios de 6 alunos. Devem ser registrados os nomes dos alunos e para cada um notas referentes a PROVA1, PROVA2 e PROVA3.
+
+```{r}
+turma <- data.frame(nomes=c("ana","bia","carol","danilo","fabio","edu"),
+                    prova1=c(3,5,6,3,4,5),
+                    prova2=c(4,7,4,2,9,8),
+                    prova3=c(10,9,7,8,6,7))
+turma
+```
+
+
+* Calcule a média de desempenho dos alunos da turma para as 3 diferentes provas.
+```{r}
+(mediap1 <- mean(turma$prova1))
+(mediap2 <- mean(turma$prova2))
+(mediap3 <- mean(turma$prova3))
+
+colMeans(turma[,2:4])
+```
+
+* Supondo que as notas finais sejam as médias ponderadas das 3 provas de forma que a média seja dada por: $nota=\frac{2P1+3P2+3P3}{8}$, calcule a nota final para cada aluno e adicione essas médias ao data.frame.
+
+```{r}
+notas <- (2*turma$prova1+3*turma$prova2+3*turma$prova3)/8
+notas
+turma$notas <- notas
+turma
+```
+
+* Adicione uma nova coluna ao data.frme para indicar os alunos que foram aprovados, considerando que a nota mínima para aprovação seja 5.
+
+```{r}
+turma$aprovado <- turma$notas>5
+turma
+turma$resultado <- ifelse(turma$notas>5, "Aprovado","Reprovado")
+turma
+```
+
+
+* Apresente apenas as informações completas dos alunos reprovados.
+```{r}
+turma[turma$resultado=="Reprovado",]
+```
+

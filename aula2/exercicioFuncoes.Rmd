@@ -1,0 +1,60 @@
+---
+title: "Exercicio de Aula"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+##Questão 1
+
+Crie uma função que receba um vetor _X_ de inteiros e um valor _z_ e determine quantas vezes o elemento _z_ está repetido no vetor _X_.
+
+```{r}
+quantos <- function(x,z){
+  sum(x==z)
+}
+```
+
+
+##Questão 2
+
+Crie uma função que receba um data.frame e um vetor de tamanho conforme e retorne um novo data.frame a inclusão do novo vetor ao data.frame original.
+
+```{r}
+agrupa <- function(dados,vetor){
+  data.frame(dados,vetor)
+}
+```
+
+
+##Questão 3
+
+Crie uma função que receba dois vetores (x,y) e produza um diagrama de dispersão entre os vetores, com uma linha vertical representando a média de x e uma linha horizontal representando a média de y.
+
+```{r}
+meugraf <- function(x,y){
+  plot(x,y)
+  abline(v=mean(x))
+  abline(h=mean(y))
+  text(x[which.max(x)],y[which.max(x)],which.max(x))
+}
+```
+
+
+* Desafio: inclua como funcionalidade representar a identificação do ponto com maior valor de X no gráfico, indicando ao lado do ponto o número da observação.
+(Use o comando text() para fazer o registro do número no gráfico. Não use a função identify)
+
+##Questão 4
+
+Crie uma função que receba um vetor de caracteres e retorne apenas os caracteres alfanuméricos. (Exemplo se o vetor for passado: ("a","b","3","d","5") a função retornará (3,5))
+
+```{r }
+#resultado <- as.numeric(teste)[!is.na(as.numeric(teste))]
+```
+
+##Questão 5
+
+Crie uma função que receba o tamanho _l_ do lado e retorne um gráfico com o quadrado de lado _l_
+

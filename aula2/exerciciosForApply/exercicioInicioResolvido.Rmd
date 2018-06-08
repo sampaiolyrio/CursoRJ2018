@@ -1,0 +1,119 @@
+---
+title: "Exercicio de Aula"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Questão 1:
+
+Considere a matriz:
+
+```{r}
+set.seed(123)
+x <- matrix(rpois(81,50),nrow=9)
+x
+```
+
+Calcule o coeficiente de variação de cada coluna considerando apenas as 8 primeiras linhas:
+
+* Utilizando apply
+```{r}
+cv <- function(valores){
+  sd(valores)/mean(valores)
+}
+apply(x[1:8,],2,cv)
+```
+
+
+* Utilizando for
+```{r}
+coeficientes <- c()
+for(i in 1:ncol(x)){
+  coeficientes[i] <- cv(x[1:8,i])
+}
+coeficientes
+```
+
+\newpage
+
+## Questão 2
+
+Uma loja tem uma política de preços para clientes especiais, sendo que clientes regulares pagam o preço integral, clientes super tem desconto de 5% e clientes vip tem desconto de 10%. 
+
+```{r}
+tabela <- data.frame(cliente = paste("cliente",1:20),
+                     tipo = sample(c("regular","super","vip"),20,replace = T),
+                     preco= round(rnorm(20,100,6)))
+head(tabela)
+```
+
+Considerando as vendas apresentadas na tabela acima, calcule o valor total recebido após aplicar os descontos:
+
+* Utilizando apply
+```{r}
+preco_final <- function(informacoes){
+  tipo <- informacoes[1]
+  valor <- as.numeric(informacoes[2])
+  if(tipo=="regular"){
+    resultado <- valor
+  }else{
+    if(tipo=="super"){
+      resultado <- valor*.95
+    }else{
+      resultado <- valor*.9
+    }
+  }
+  resultado
+}
+tabela$final_apply <- apply(tabela[,2:3],1,preco_final)
+sum(tabela$final_apply)
+```
+
+* Utilizando for
+
+```{r}
+precosfinais <- c()
+for(i in 1:nrow(tabela)){
+  precosfinais[i] <- preco_final(tabela[i,2:3])
+}
+tabela$final_for <- precosfinais
+head(tabela)
+sum(tabela$final_for)
+```
+
+
+\vspace{.5cm}
+* Quantos clientes de cada tipo existem?
+```{r}
+summary(tabela$tipo)
+```
+
+* Qual é a média de preço final após o desconto para cada grupo?
+```{r}
+tapply(tabela$final_apply,tabela$tipo,mean)
+```
+
+
+## Questão 3
+
+Uma técnica para obter intervalo de confiança para mediana é a utilização de re-amostragens. Considerando o vetor abaixo:
+
+```{r}
+x <- round(rnorm(30,10,2),2)
+x
+```
+
+* Faça 50 reamostras, usando a função _sample(x,30,replace=T)_ para cada amostra calcule e armazene o valor da mediana. Após ordenar os valores um intervalo de confiança seria obtido pegando como limite inferior a 3 observação ordenada e como limite superior a 47 observação ordenada.
+
+```{r}
+medianas <- c()
+for(i in 1:50){
+  amostra <- sample(x,30,replace = T)
+  medianas[i] <- median(amostra)
+}
+sort(medianas)[c(3,47)]
+```
+
