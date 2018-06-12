@@ -578,12 +578,101 @@ A função básica para importação de dados para R é a função _read.table_.
 
 No exemplo seguinte serão importados dados referentes a pesca de camarões no estado do Rio Grande do Norte
 ```{r}
-camaroes <- read.table("dadoscamarao.txt", head = TRUE, dec=",")
+camaroes <- read.table("https://raw.githubusercontent.com/cursoRunb/CursoRJ2018/master/dados/dadoscamarao.txt",
+                       head = TRUE,
+                       dec=",")
 head(camaroes)
 ```
 para a importação desse conjunto de dados foram passados como argumentos o endereço do arquivo de interesse, a informação que os dados tem um cabeçalho, de forma que a primeira linha dos dados é referente ao nome das variáveis e finalmente a indicação que os números decimais estão separados por vírgulas.
 
 A função _head_ utilizada após a importação dos dados tem como objetivo exibir as primeiras linhas do banco de dados e é comumente utilizada para verificar se a importação dos dados foi bem sucedida.
+
+\newpage
+
+##Gráficos
+
+Para ilustrar algumas possibilidades gráficas serão explorados os dados de camarões importadas no exemplo anterior. 
+
+Inicialmente será considerado o mapeamento de pontos no sistema de coordenadas cartesianas em que cada ponto é um par ordenado de coordenadas. Por exemplo um conjunto de pontos: $P1$ com coordenadas $(X_1=3, Y_1=4)$ e $P2$ com coordenadas $(X_1=2, Y_1=1)$ será representado gráficamente utilizando a seguinte função:
+```{r}
+plot(x = c(3,2), y = c(4,1))
+```
+e pode-se ver os pontos representados em suas respectivas coordenadas. 
+
+A partir desse conceito básico da representação dos pontos por suas coordenadas será criado um diagrama de dispersão representando a associação entre os pesos e os comprimentos dos camarões do conjunto de dados de exemplo. Cada ponto representa um dos 120 animais capturados de forma que sua localização no gráfico faz referência ao seu comprimento total e seu peso
+```{r}
+plot(camaroes$Ct, camaroes$Peso)
+```
+
+Para ilustrar as diferentes formas de controlar as opções gráficas serão feitas modificações nesse gráfico para que ele esteja mais informativo e adequado para a publicação em um relatório. O primeiro passo é controlar os rótulos dos eixos $X$ e $Y$
+```{r}
+plot(camaroes$Ct, camaroes$Peso,
+     xlab = "Comprimento total em mm", ylab = "Peso em gramas")
+```
+
+Pode-se atribuir um título ao gráfico utilizando o parâmetro _main_ da função
+```{r}
+plot(camaroes$Ct, camaroes$Peso,
+     xlab = "Comprimento total em mm", ylab = "Peso em gramas",
+     main = "Camarões do Rio Grande do Norte")
+```
+
+Uma vez que temos informações sobre o sexo desses camarões pode-se utilizar alguma estratégia para diferenciar os pontos referentes aos camarões machos e fêmeas. Para utilizar cores na diferenciação dos pontos será preciso indicar para cada camarão qual cor deve ser utilizada em seu ponto. Como as cores serão definidas por seus nomes em inglês será utilizada uma função para criar um vetor com as cores "blue" para camarões macho e "pink" para camarões fêmea
+```{r}
+cor_camarao <- ifelse(camaroes$Sexo == "M","blue","pink")
+plot(camaroes$Ct, camaroes$Peso,
+     xlab = "Comprimento total em mm", ylab = "Peso em gramas",
+     main = "Camarões do Rio Grande do Norte",
+     col = cor_camarao)
+```
+Uma vez que essa diferenciação por cores foi feita é interessante adicionar uma legenda para indicar a relação entre as cores e os sexos dos camarões. A função legend permite que se defina as coordenadas que a caixa de legenda será posicionada.
+```{r}
+plot(camaroes$Ct, camaroes$Peso,
+     xlab = "Comprimento total em mm", ylab = "Peso em gramas",
+     main = "Camarões do Rio Grande do Norte",
+     col = cor_camarao)
+legend(x = 60,y = 30,legend = c("Macho","Femea"), fill = c("blue","pink"))
+```
+Uma vez que a localidade de pesca de cada animal essa informação tambêm pode ser adicionada ao gráfico pela utilização de tipos diferentes de pontos. 
+
+Antes de adicionar essa informação ao gráfico de camarões a o gráfico seguinte ilustra diferente tipos de pontos disponíveis.
+```{r}
+plot(1:20,pch=1:20)
+```
+
+e assim como os tipos de pontos são definidos por números, será criada uma variável auxiliar para definir o tipo de ponto que irá representar cada diferente localidade de pesca
+
+```{r}
+local_numero <- as.numeric(camaroes$Local)
+plot(camaroes$Ct, camaroes$Peso,
+     xlab = "Comprimento total em mm", ylab = "Peso em gramas",
+     main = "Camarões do Rio Grande do Norte",
+     col = cor_camarao,
+     pch = local_numero)
+legend(x = 60,y = 30,
+       legend = c("Macho","Femea","BaiaFormosa","DiogoLopes","Touros"),
+       col = c("blue","pink","black","black","black"),
+       pch = c(15,15,1,2,3))
+```
+
+Para representar variáveis quantitativas em outras formas gráficas pode-se considerar os seguintes exemplos:
+
+```{r}
+hist(camaroes$Peso, main = "Histograma", xlab="Peso em gramas")
+```
+```{r}
+boxplot(camaroes$Peso ~ camaroes$Sexo)
+```
+
+Para variáveis qualitativas deve-se fazer a contagem nas diferentes categorias para criar gráficos.
+```{r}
+table(camaroes$Sexo)
+barplot(table(camaroes$Sexo))
+```
+```{r}
+pie(table(camaroes$Local))
+```
+
 
 \newpage
 
@@ -613,6 +702,22 @@ A função _head_ utilizada após a importação dos dados tem como objetivo exi
 
 * if()
 
+* ifelse()
+
 * for()
 
 * while()
+
+* table()
+
+* plot()
+
+* legend()
+
+* hist()
+
+* boxplot()
+
+* barplot()
+
+* pie()
