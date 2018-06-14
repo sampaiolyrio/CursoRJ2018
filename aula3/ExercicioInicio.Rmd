@@ -8,10 +8,20 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Em nossa página https://github.com/cursoRunb/CursoRJ2018 temos um conjunto de dados sobre servidores e funções gratificadas chamado "funcoes_por_unidades.csv"
+Em nossa página https://github.com/cursoRunb/CursoRJ2018/ temos, na pasta da aula3, um conjunto de dados sobre servidores e funções gratificadas chamado: "funcoes_por_unidades.csv"
 
 Crie um documento markdown para apresentar uma análise descritiva desses dados com foco para as seguintes informações:
 
 * Número total de registros no banco de dados
+
 * Número de seções existentes nos dados
+
 * Gráficos de barras e pizza para as variáveis qualitativas
+
+* Tabela de dupla entrada relacionando função com código de função.
+
+* Utilize as opções de controle do markdown de forma que os comandos utilizados em R não apareçam na etapa de importação de dados mas apareçam nas etapas de análise.
+
+\vspace{1cm}
+
+__Note que aparecem alguns caracteres especiais no conjunto de dados. Para fazer a leitura correta dos dados utilize a opção:__ _encoding="latin1"_
