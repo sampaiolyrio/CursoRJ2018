@@ -1,0 +1,26 @@
+---
+title: "Exercícios de Aula"
+author: "Minicurso R/Shiny"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Crie um aplicativo shiny com as seguintes funcionalidades:
+
+* Faça acesso aos dados de pesca de camarão disponível em nossa página
+
+* Na barra lateral crie botões de radio que permitam escolher camarões macho, femea ou ambos
+
+* Na barra lateral crie campo de texto que permita escrever uma cor para representar os camarões macho
+
+* Na barra lateral crie caixa de seleção que permita escolher uma cor para representar os camarões femea
+
+* Na parte principal da página crie um painel de abas
+
+* Em uma aba apresente um gráfico de dispersão relacionando o Peso e o comprimento total dos camarões Ct
+
+* Em outra aba apresente um sumário dos dados dos camarões
+

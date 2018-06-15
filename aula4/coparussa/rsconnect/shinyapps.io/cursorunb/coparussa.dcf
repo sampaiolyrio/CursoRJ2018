@@ -1,0 +1,12 @@
+name: coparussa
+title: coparussa
+username:
+account: cursorunb
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 361446
+bundleId: 1430953
+url: https://cursorunb.shinyapps.io/coparussa/
+when: 1529050935.29108
+asMultiple: FALSE
+asStatic: FALSE
